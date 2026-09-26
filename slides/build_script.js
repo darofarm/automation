@@ -1,6 +1,8 @@
 const fs = require('fs');
 const { Document, Packer, Paragraph, TextRun, AlignmentType, BorderStyle, Footer, PageNumber, ShadingType } = require('docx');
-const NOTES = require('./notes.json');
+// 사용법: node build_script.js <notes.json> <발표 제목> <출력.docx>
+const [notesPath = './notes.json', DECK = '영유아교육과정의 이해', OUT = '영유아교육과정의_이해_발표대본.docx'] = process.argv.slice(2);
+const NOTES = require(require('path').resolve(notesPath));
 
 const FONT = 'Malgun Gothic';
 const SAGE = '5E8C6A', MUTE = '6E7B73', INK = '33413A';
@@ -11,12 +13,12 @@ const total = NOTES.reduce((a, n) => a + secs(n.script), 0);
 
 const run = (text, o = {}) => new TextRun({ text, font: FONT, color: INK, size: 26, ...o });
 const children = [
-  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [run('영유아교육과정의 이해', { bold: true, size: 40, color: SAGE })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [run(DECK, { bold: true, size: 40, color: SAGE })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [run('발표 대본 (연습용)', { size: 24, color: MUTE })] }),
   new Paragraph({
     alignment: AlignmentType.CENTER, spacing: { after: 360 },
     border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: 'C9D6CC', space: 8 } },
-    children: [run(`슬라이드 6장  ·  예상 시간 약 ${fmt(total)}  ·  연습 체크  □ □ □ □ □`, { size: 20, color: MUTE })],
+    children: [run(`슬라이드 ${NOTES.length}장  ·  예상 시간 약 ${fmt(total)}  ·  연습 체크  □ □ □ □ □`, { size: 20, color: MUTE })],
   }),
 ];
 
@@ -43,4 +45,4 @@ const doc = new Document({
     children,
   }],
 });
-Packer.toBuffer(doc).then(b => fs.writeFileSync('영유아교육과정의_이해_발표대본.docx', b));
+Packer.toBuffer(doc).then(b => fs.writeFileSync(OUT, b));
