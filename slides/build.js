@@ -33,13 +33,13 @@ async function build(pres, opts = {}) {
   T(s, '좁은 의미', { x: 6.45, y: 2.45, w: 2.1, h: 0.3, fontSize: 13, bold: true, color: 'B45A64', align: 'center' });
   T(s, '계획된 교과목\n또는 교수요목', { x: 6.45, y: 2.8, w: 2.1, h: 0.6, fontSize: 12, align: 'center' });
   // 정의 인용
-  s.addShape('roundRect', { x: 0.5, y: 4.2, w: 9.0, h: 0.95, fill: { color: 'F4F7F4' }, rectRadius: 0.12 });
+  s.addShape('roundRect', { x: 0.5, y: 4.05, w: 9.0, h: 1.15, fill: { color: 'F4F7F4' }, rectRadius: 0.12 });
   T(s, [
-    { text: '교육과정 = ', options: { bold: true, color: C.sage } },
-    { text: '전인적 성장·발달을 돕는 교수-학습 경험의 체계적 ', options: {} },
+    { text: '"학습자의 전인적 성장과 발달을 돕기 위해서 학교가 의미하는 교육적 상황을 마련하고 모든 종류의 교수-학습 경험을 체계적으로 구성한 ', options: {} },
     { text: '설계도', options: { bold: true, color: C.sage } },
-  ], { x: 0.75, y: 4.3, w: 8.5, h: 0.45, fontSize: 16 });
-  T(s, '방인옥 등(1999)', { x: 0.75, y: 4.75, w: 8.5, h: 0.3, fontSize: 11, color: C.mute });
+    { text: '"', options: {} },
+  ], { x: 0.75, y: 4.12, w: 8.5, h: 0.7, fontSize: 13, valign: 'middle' });
+  T(s, '방인옥 등(1999)', { x: 0.75, y: 4.85, w: 8.5, h: 0.28, fontSize: 11, color: C.mute });
   s.addNotes(NOTES[1].script);
 
   // ---------- 3. 유치원교육과정 → 누리과정 ----------
@@ -79,11 +79,11 @@ async function build(pres, opts = {}) {
   s = pres.addSlide();
   s.background = { color: C.white };
   title(s, '어린이집 표준보육과정', 4);
-  T(s, '왜 필요해졌을까?', { x: 0.5, y: 1.2, w: 4.2, h: 0.35, fontSize: 15, bold: true, color: C.sage });
+  T(s, '표준보육과정 개발의 배경', { x: 0.5, y: 1.2, w: 4.2, h: 0.35, fontSize: 15, bold: true, color: C.sage });
   const bg = [
     { i: 'FaHome', c: C.peach, t: '핵가족화' },
-    { i: 'FaBriefcase', c: C.butter, t: '취업모의 지속적 증가' },
-    { i: 'FaSeedling', c: C.sage, t: '조기 경험의 중요성 부각' },
+    { i: 'FaBriefcase', c: C.butter, t: '취업모의 지속적인 증가' },
+    { i: 'FaSeedling', c: C.sage, t: '영유아기 교육의 중요성 부각' },
   ];
   for (let k = 0; k < bg.length; k++) {
     const y = 1.7 + k * 0.62;
@@ -93,18 +93,17 @@ async function build(pres, opts = {}) {
   }
   s.addShape('roundRect', { x: 0.5, y: 3.65, w: 4.1, h: 1.35, fill: { color: C.sageL }, rectRadius: 0.12 });
   T(s, [
-    { text: '어린이집 이용의 보편화', options: { bold: true, breakLine: true } },
-    { text: '언제, 무엇을 목표로, 어떤 경험을 줄지', options: { breakLine: true } },
-    { text: '→ ', options: {} },
+    { text: '영유아가 어린이집에 다니는 것이 보편화', options: { bold: true, breakLine: true } },
+    { text: '→ 언제, 무엇을 목표로 어떤 경험을 제공할 것인가에 대한 ', options: {} },
     { text: '국가수준의 지침', options: { bold: true, color: C.sage } },
-    { text: '이 필요해짐', options: {} },
+    { text: ' 필요', options: {} },
   ], { x: 0.7, y: 3.75, w: 3.8, h: 1.15, fontSize: 13, valign: 'middle', paraSpaceAfter: 4 });
   // 세로 연표
   const vt = [
-    { y: '2004', t: '영유아보육법 제29조 제2항 개정\n표준보육과정 개발·보급 명시' },
+    { y: '2004', t: '영유아보육법 전면 개정\n제29조 제2항에 개발·보급 명시' },
     { y: '2007', t: '표준보육과정 공포' },
-    { y: '2013', t: '제3차 표준보육과정 개정' },
-    { y: '2020', t: '제4차 표준보육과정 고시' },
+    { y: '2013', t: '제3차 어린이집 표준보육과정으로\n개정' },
+    { y: '2020', t: '제4차 어린이집 표준보육과정 고시' },
     { y: '2025', t: '2024 개정 표준보육과정(0~2세) 고시' },
   ];
   s.addShape('line', { x: 5.55, y: 1.35, w: 0, h: 3.55, line: { color: 'C9D6CC', width: 2.5 } });
@@ -122,9 +121,9 @@ async function build(pres, opts = {}) {
   title(s, '2019 개정 누리과정의 혁신 방향', 5);
   T(s, "출발선 평등 실현을 위한 '유아교육 혁신방안'에 의거 (교육부, 2017)", { x: 1.2, y: 1.0, w: 8.3, h: 0.3, fontSize: 12, color: C.mute });
   const inn = [
-    { n: '첫째', i: 'FaChild', c: C.peach, f: C.peachL, from: '초등학교 준비 위주 학습', to: '개별 유아의 다양한 특성 고려' },
-    { n: '둘째', i: 'FaPuzzlePiece', c: C.butter, f: C.butterL, from: '교사계획서·학습 위주 교육', to: '자유놀이 권장\n관찰·기록 등 상호작용 강조' },
-    { n: '셋째', i: 'FaLeaf', c: C.sage, f: C.sageL, from: '5개 영역, 주제-소주제의\n지나치게 세부적인 구성', to: '세부내용 삭제로\n현장의 자율성 존중' },
+    { n: '첫째', i: 'FaChild', c: C.peach, f: C.peachL, from: '초등학교 준비 위주의 학습', to: '개별 유아에 대한 다양한\n특성을 고려한 내용' },
+    { n: '둘째', i: 'FaPuzzlePiece', c: C.butter, f: C.butterL, from: '교사계획서 위주, 학습 위주의 교육', to: '유아의 자유놀이 권장\n관찰과 기록 등 유아와의\n상호작용 강조' },
+    { n: '셋째', i: 'FaLeaf', c: C.sage, f: C.sageL, from: '5개 영역, 주제-소주제 등\n구성체계가 지나치게 세부적', to: '현장의 자율성 존중을 위해\n세부내용 삭제' },
   ];
   for (let k = 0; k < 3; k++) {
     const x = 0.5 + k * 3.1, e = inn[k];
@@ -134,10 +133,10 @@ async function build(pres, opts = {}) {
     T(s, e.n, { x: x + 0.95, y: 1.7, w: 1.6, h: 0.6, fontSize: 18, bold: true, valign: 'middle' });
     T(s, e.from, { x: x + 0.2, y: 2.45, w: 2.4, h: 0.55, fontSize: 11, color: C.mute, valign: 'top' });
     T(s, '▼', { x: x + 0.2, y: 3.0, w: 2.4, h: 0.25, fontSize: 10, color: e.c === C.butter ? 'B08A2E' : e.c });
-    T(s, e.to, { x: x + 0.2, y: 3.3, w: 2.4, h: 0.85, fontSize: 14, bold: true, valign: 'top' });
+    T(s, e.to, { x: x + 0.2, y: 3.28, w: 2.45, h: 0.95, fontSize: 13, bold: true, valign: 'top' });
   }
   s.addShape('roundRect', { x: 0.5, y: 4.45, w: 9.0, h: 0.7, fill: { color: C.sage }, rectRadius: 0.35 });
-  T(s, '유아 중심 · 놀이 중심 교육과정  →  2020년부터 유치원·어린이집 공통 적용', { x: 0.5, y: 4.45, w: 9.0, h: 0.7, fontSize: 17, bold: true, color: C.white, align: 'center', valign: 'middle' });
+  T(s, "'유아 중심·놀이 중심 교육과정'  →  2020년부터 유치원과 어린이집 공통교육과정으로 적용", { x: 0.5, y: 4.45, w: 9.0, h: 0.7, fontSize: 14, bold: true, color: C.white, align: 'center', valign: 'middle' });
   s.addNotes(NOTES[4].script);
 
   // ---------- 6. 한눈에 정리 ----------
@@ -152,9 +151,9 @@ async function build(pres, opts = {}) {
   T(s, '누리과정', { x: 4.5, y: 1.75, w: 4.8, h: 0.45, fontSize: 18, bold: true, color: 'B08A2E' });
   T(s, '3~5세 · 유치원과 어린이집 공통', { x: 4.5, y: 2.2, w: 4.8, h: 0.4, fontSize: 13 });
   const sum = [
-    ['교육과정', '학습자의 전인적 성장·발달을 위한 교수-학습 경험의 설계도'],
-    ['누리과정', '이원화된 과정을 일원화해 교육의 질과 출발점 평등을 보장'],
-    ['2019 개정', '유아 중심·놀이 중심, 현장의 자율성 존중'],
+    ['교육과정', '학습자의 전인적 성장과 발달을 돕기 위한 교수-학습 경험의 설계도'],
+    ['누리과정', '유치원교육과정과 표준보육과정 일원화, 생애초기 출발점 평등 보장'],
+    ['2019 개정', "'유아 중심·놀이 중심 교육과정'으로 개정"],
   ];
   sum.forEach((r, k) => {
     const y = 3.1 + k * 0.62;
