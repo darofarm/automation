@@ -1,6 +1,6 @@
 const pptxgen = require('pptxgenjs');
-const { FONT, C, icon, T, title, rings } = require('./lib');
-const NOTES = require('./notes3.json');
+const { FONT, C, icon, T, title, rings, cover } = require('./lib');
+const DEFAULT_NOTES = require('./notes3.json');
 
 const card = (s, x, y, w, h, fill) => s.addShape('roundRect', { x, y, w, h, fill: { color: fill }, rectRadius: 0.15 });
 async function dot(s, x, y, d, fill, ic) {
@@ -10,20 +10,9 @@ async function dot(s, x, y, d, fill, ic) {
 const cell = (text, o = {}) => ({ text, options: { fontFace: FONT, fontSize: 11, color: C.ink, valign: 'middle', align: 'center', margin: 0.05, ...o } });
 const head = (text, o = {}) => cell(text, { bold: true, fill: { color: C.sageL }, ...o });
 
-(async () => {
-  const pres = new pptxgen();
-  pres.layout = 'LAYOUT_16x9';
-  pres.title = '영유아교육과정의 계획 및 운영';
-
-  // ---------- 1. 표지 ----------
-  let s = pres.addSlide();
-  s.background = { color: C.sage };
-  rings(s, 8.6, 1.3, 1.6, ['7FA88A', 'A9CBB0', 'DCEBDD', 'F5D07A']);
-  rings(s, 9.4, 4.7, 0.8, ['F2A27E', 'FCE4D8', 'F2A27E']);
-  T(s, '05  교육과정의 계획과 운영', { x: 0.7, y: 1.35, w: 6, h: 0.4, fontSize: 16, color: C.butterL });
-  T(s, '영유아교육과정의\n계획 및 운영', { x: 0.7, y: 1.8, w: 7, h: 1.5, fontSize: 40, bold: true, color: C.white, valign: 'top' });
-  T(s, '표준보육과정과 관련 지침 살펴보기', { x: 0.7, y: 3.4, w: 7, h: 0.45, fontSize: 18, color: C.white });
-  T(s, '과목명  |  학번  |  발표자 이름', { x: 0.7, y: 4.5, w: 6, h: 0.4, fontSize: 14, color: C.sageL });
+async function build(pres, opts = {}) {
+  const NOTES = opts.notes || DEFAULT_NOTES;
+  let s = cover(pres, { title: '영유아교육과정의\n계획 및 운영', sub: '표준보육과정과 관련 지침 살펴보기', part: opts.part, titleSize: 40, twoLine: true });
   s.addNotes(NOTES[0].script);
 
   // ---------- 2. 계획·운영의 기준 ----------
@@ -193,5 +182,14 @@ const head = (text, o = {}) => cell(text, { bold: true, fill: { color: C.sageL }
   T(s, '국가수준 교육과정 이해  +  지역·기관의 지침 반영  =  좋은 교육과정 운영', { x: 0.5, y: 4.45, w: 9.0, h: 0.7, fontSize: 16, bold: true, color: C.white, align: 'center', valign: 'middle' });
   s.addNotes(NOTES[6].script);
 
+}
+
+module.exports = { build };
+
+if (require.main === module) (async () => {
+  const pres = new pptxgen();
+  pres.layout = 'LAYOUT_16x9';
+  pres.title = '영유아교육과정의 계획 및 운영';
+  await build(pres);
   await pres.writeFile({ fileName: '영유아교육과정의_계획및운영.pptx' });
 })();

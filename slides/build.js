@@ -1,21 +1,10 @@
 const pptxgen = require('pptxgenjs');
-const { FONT, C, icon, T, title, rings } = require('./lib');
-const NOTES = require('./notes.json');
+const { FONT, C, icon, T, title, rings, cover } = require('./lib');
+const DEFAULT_NOTES = require('./notes.json');
 
-(async () => {
-  const pres = new pptxgen();
-  pres.layout = 'LAYOUT_16x9';
-  pres.title = '영유아교육과정의 이해';
-
-  // ---------- 1. 표지 ----------
-  let s = pres.addSlide();
-  s.background = { color: C.sage };
-  rings(s, 8.6, 1.3, 1.6, ['7FA88A', 'A9CBB0', 'DCEBDD', 'F5D07A']);
-  rings(s, 9.4, 4.7, 0.8, ['F2A27E', 'FCE4D8', 'F2A27E']);
-  T(s, '05  교육과정의 계획과 운영', { x: 0.7, y: 1.35, w: 6, h: 0.4, fontSize: 16, color: C.butterL });
-  T(s, '영유아교육과정의 이해', { x: 0.7, y: 1.8, w: 7, h: 1.0, fontSize: 44, bold: true, color: C.white });
-  T(s, '교육과정의 정의부터 누리과정·표준보육과정까지', { x: 0.7, y: 2.85, w: 7, h: 0.45, fontSize: 18, color: C.white });
-  T(s, '과목명  |  학번  |  발표자 이름', { x: 0.7, y: 4.3, w: 6, h: 0.4, fontSize: 14, color: C.sageL });
+async function build(pres, opts = {}) {
+  const NOTES = opts.notes || DEFAULT_NOTES;
+  let s = cover(pres, { title: '영유아교육과정의 이해', sub: '교육과정의 정의부터 누리과정·표준보육과정까지', part: opts.part, titleSize: 44, twoLine: false });
   s.addNotes(NOTES[0].script);
 
   // ---------- 2. 교육과정이란? ----------
@@ -176,5 +165,14 @@ const NOTES = require('./notes.json');
   });
   s.addNotes(NOTES[5].script);
 
+}
+
+module.exports = { build };
+
+if (require.main === module) (async () => {
+  const pres = new pptxgen();
+  pres.layout = 'LAYOUT_16x9';
+  pres.title = '영유아교육과정의 이해';
+  await build(pres);
   await pres.writeFile({ fileName: '영유아교육과정의_이해.pptx' });
 })();

@@ -1,6 +1,6 @@
 const pptxgen = require('pptxgenjs');
-const { C, icon, T, title, rings } = require('./lib');
-const NOTES = require('./notes2.json');
+const { C, icon, T, title, rings, cover } = require('./lib');
+const DEFAULT_NOTES = require('./notes2.json');
 
 const card = (s, x, y, w, h, fill) => s.addShape('roundRect', { x, y, w, h, fill: { color: fill }, rectRadius: 0.15 });
 async function dot(s, x, y, d, fill, ic) {
@@ -8,20 +8,9 @@ async function dot(s, x, y, d, fill, ic) {
   s.addImage({ data: await icon(ic, C.white), x: x + d * 0.25, y: y + d * 0.25, w: d * 0.5, h: d * 0.5 });
 }
 
-(async () => {
-  const pres = new pptxgen();
-  pres.layout = 'LAYOUT_16x9';
-  pres.title = '영유아교육과정의 구성';
-
-  // ---------- 1. 표지 ----------
-  let s = pres.addSlide();
-  s.background = { color: C.sage };
-  rings(s, 8.6, 1.3, 1.6, ['7FA88A', 'A9CBB0', 'DCEBDD', 'F5D07A']);
-  rings(s, 9.4, 4.7, 0.8, ['F2A27E', 'FCE4D8', 'F2A27E']);
-  T(s, '05  교육과정의 계획과 운영', { x: 0.7, y: 1.35, w: 6, h: 0.4, fontSize: 16, color: C.butterL });
-  T(s, '영유아교육과정의 구성', { x: 0.7, y: 1.8, w: 7, h: 1.0, fontSize: 44, bold: true, color: C.white });
-  T(s, '구성 요소와 구성의 네 가지 특징', { x: 0.7, y: 2.85, w: 7, h: 0.45, fontSize: 18, color: C.white });
-  T(s, '과목명  |  학번  |  발표자 이름', { x: 0.7, y: 4.3, w: 6, h: 0.4, fontSize: 14, color: C.sageL });
+async function build(pres, opts = {}) {
+  const NOTES = opts.notes || DEFAULT_NOTES;
+  let s = cover(pres, { title: '영유아교육과정의 구성', sub: '구성 요소와 구성의 네 가지 특징', part: opts.part, titleSize: 44, twoLine: false });
   s.addNotes(NOTES[0].script);
 
   // ---------- 2. 구성 요소: 타일러의 네 가지 질문 ----------
@@ -172,5 +161,14 @@ async function dot(s, x, y, d, fill, ic) {
   T(s, '아이가 놀이 속에서 자연스럽게 배우도록 구성하는 것이 핵심', { x: 0.5, y: 4.4, w: 9, h: 0.5, fontSize: 17, bold: true, color: C.white });
   s.addNotes(NOTES[5].script);
 
+}
+
+module.exports = { build };
+
+if (require.main === module) (async () => {
+  const pres = new pptxgen();
+  pres.layout = 'LAYOUT_16x9';
+  pres.title = '영유아교육과정의 구성';
+  await build(pres);
   await pres.writeFile({ fileName: '영유아교육과정의_구성.pptx' });
 })();
